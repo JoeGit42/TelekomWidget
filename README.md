@@ -1,15 +1,12 @@
 # iOS-Widget für Datenverbrauch im Telekom-Netz
-### (Forked from [LupusArgentum/TelekomWidget] (https://github.com/LupusArgentum/TelekomWidget)
-### (Which was forked from [Sillium/telekom.js](https://gist.github.com/Sillium/f904fb89444bc8dde12cfc07b8fa8728))
+### Forked from [LupusArgentum/TelekomWidget](https://github.com/LupusArgentum/TelekomWidget)
+### (Which was forked from [Sillium/telekom.js](https://gist.github.com/Sillium/f904fb89444bc8dde12cfc07b8fa8728)
 
 ![IMG_0491](https://user-images.githubusercontent.com/14128113/97805206-02d14880-1c55-11eb-907c-b1c4d08396ba.jpeg)
 ![IMG_0492](https://user-images.githubusercontent.com/14128113/97805208-04027580-1c55-11eb-8356-9091424a150c.jpeg)
 
-
-- "API offline" wird angezeigt, wenn datapass.de nicht aufgerufen werden kann (z.B. wenn WLAN aktiv ist)
-- verbleibende Zeit wird rot angezeigt, wenn weniger als 3 Tage verbleiben
-- Komplett Dark- und Lightmode kompatibel
-- funktioniert mit allen Telekom-Tarifen mit Datenvolumen, die Zugriff auf datapass.de haben (z.B. auch Prepaid-Discounter von congstar)
+Oben im Code gibt es diverse Schalter um zwischen unterschiedlichen Funktionssweisen zu wechseln.
+Diese kann dan jeder für sich individuell auf 'true' oder 'false' setzen. Abhängigkeiten zwischen den Schaltern gibt es keine.
 
 ### Bugs
 
