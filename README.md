@@ -6,7 +6,7 @@
 ![IMG_0492](https://user-images.githubusercontent.com/14128113/97805208-04027580-1c55-11eb-8356-9091424a150c.jpeg)
 
 Oben im Code gibt es diverse Schalter um zwischen unterschiedlichen Funktionssweisen zu wechseln.
-Diese kann dan jeder für sich individuell auf 'true' oder 'false' setzen. Abhängigkeiten zwischen den Schaltern gibt es keine.
+Diese kann jeder für sich individuell auf `true` oder `false` setzen. Abhängigkeiten zwischen den Schaltern gibt es keine.
 
 ### Bugs
 
