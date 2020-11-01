@@ -1,6 +1,6 @@
 # iOS-Widget für Datenverbrauch im Telekom-Netz
 ### Forked from [LupusArgentum/TelekomWidget](https://github.com/LupusArgentum/TelekomWidget)
-### (Which was forked from [Sillium/telekom.js](https://gist.github.com/Sillium/f904fb89444bc8dde12cfc07b8fa8728)
+### (Which was forked from [Sillium/telekom.js](https://gist.github.com/Sillium/f904fb89444bc8dde12cfc07b8fa8728))
 
 ![IMG_0491](https://user-images.githubusercontent.com/14128113/97805206-02d14880-1c55-11eb-907c-b1c4d08396ba.jpeg)
 ![IMG_0492](https://user-images.githubusercontent.com/14128113/97805208-04027580-1c55-11eb-8356-9091424a150c.jpeg)
