@@ -1,7 +1,10 @@
 # iOS-Widget für Datenverbrauch im Telekom-Netz
-### (Forked from [Sillium/telekom.js](https://gist.github.com/Sillium/f904fb89444bc8dde12cfc07b8fa8728))
+### (Forked from [LupusArgentum/TelekomWidget] (https://github.com/LupusArgentum/TelekomWidget)
+### (Which was forked from [Sillium/telekom.js](https://gist.github.com/Sillium/f904fb89444bc8dde12cfc07b8fa8728))
 
-![](https://i.imgur.com/hgrwim3.png)
+![IMG_0491](https://user-images.githubusercontent.com/14128113/97805206-02d14880-1c55-11eb-907c-b1c4d08396ba.jpeg)
+![IMG_0492](https://user-images.githubusercontent.com/14128113/97805208-04027580-1c55-11eb-8356-9091424a150c.jpeg)
+
 
 - "API offline" wird angezeigt, wenn datapass.de nicht aufgerufen werden kann (z.B. wenn WLAN aktiv ist)
 - verbleibende Zeit wird rot angezeigt, wenn weniger als 3 Tage verbleiben
@@ -9,20 +12,18 @@
 - funktioniert mit allen Telekom-Tarifen mit Datenvolumen, die Zugriff auf datapass.de haben (z.B. auch Prepaid-Discounter von congstar)
 
 ### Bugs
-```
-if (data.passName == "Ihr Datenvolumen" || data.passName == "Ihr Telekom Datentarif") {
-  line1 = list.addText("Datenvolumen")
-} else {
-  line1 = list.addText("Pass: " + data.passName)
-}
-```
-Diese Code-Zeilen werden verwendet, um normales Inklusivvolumen von evtl. gebuchten Datenpässen unterscheiden zu können.
-Hier kann es zu Problemen kommen, wenn das gebuchte Datenvolumen einen anderen Passnamen hat. Hier hilft es, den Passnamen selbst zu recherchieren und den Code entsprechend anzupassen.
 
 ### Fixes
-- 26.10.20: Zeile 49 angepasst um ein weiteres Szenario für den Pass-Namen abzudecken
-- 27.10.20: Kleiner Fehler in Zeile 49 korrigiert
-- 31.10.20: 
-**Auf Wunsch kann jetzt in der oberen rechten Ecke ein Logo angezeigt werden. Ein Telekom-Logo habe ich vorkonfiguriert, wer ein anderes Logo möchte, muss die URL in Zeile 119 anpassen. Aktiviert wird das Logo, indem das Widget den Parameter _logo_ übergeben bekommt.**
-- 31.10.20: Logik-Fehler bei der Farbgebung des verbleibenden Volumens korrigiert
-- 01.11.20: **Anzeige der letzten Aktualisierung bezieht sich jetzt auf die Uhrzeit des letzten Abrufs von Datapass**
+
+### InitialChanges (01.11.2020)
+
+Basierend auf dem Fork von [LupusArgentum](https://github.com/LupusArgentum) habe ich ein paar Änderungen vorgenommen:
+
+- Speichern der letzten Sync-Zeit (LupusArgentum hat das bereits parallel implementiert - allerdings leicht anders)
+=> Ich speichere direkt im JSON statt einer separaten Datei
+- Schalter um die rote/grüne Einfärbung der restlichen Laufzeit zu unterdrücken: `colorTimeToSignalEndOfMonth`
+- Schalter um die Anzeige im WLAN zu unterdrücken, dass die API nicht erreicht wurde `showIndicationIfAPIOffline`. (orangener Text) => Stattdessen wird nun die letzte Aktualisierung orange eingefärbt, wenn älter als 1 Tag
+- Schalter um das noch verfügbare (statt dem verbrauchten) Volumen anzuzeigen: `showAvailableVolume`
+- Erweiterung der DataPassName-Texte um Texte, die nur aus einem Zeichen bestehen (z.B. bei HIGH Mobile)
+- Erweiterung der Einfärbungen um dynamische (statt statischer) Grenzen. Das verfügbare Volumen wird nun ins Verhältnis gesetzt zur restlichen Laufzeit des Monats
+- Optimierung im Bereich der Texte/Textlängen
