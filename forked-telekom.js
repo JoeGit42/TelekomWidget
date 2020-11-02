@@ -171,7 +171,7 @@ async function createWidget(items) {
   const df = new DateFormatter()
   const wasFetchedToday = (currentTime.getDate() == syncTime.getDate() && currentTime.getMonth() == syncTime.getMonth() )  
   df.dateFormat = (wasFetchedToday ? "HH:mm" : "dd.MM. HH:mm")  
-  let timeLabel = list.addText("aktualisiert " + df.string(syncTime))
+  let timeLabel = list.addText("↻ " + df.string(syncTime))
   timeLabel.font = Font.mediumSystemFont(10)
   // If APIOffline indication is not shown, the text is marked orange, if last sync is older than 1 day (86400 seconds * milliseconds)
   timeLabel.textColor = (!showIndicationIfAPIOffline && (currentTime - syncTime) > (86400*1000)) ? Color.orange() : Color.lightGray()
