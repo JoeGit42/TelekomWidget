@@ -7,7 +7,7 @@ const logoIsWanted =  (args.widgetParameter == "logo")  // value "logo" has to b
 const colorTimeToSignalEndOfMonth = false // for those who are requried to to monthly order of data valume: if only 3 days left, time becomes red
 const showIndicationIfAPIOffline = false // if you want to be informed, if API is not available (e.g. if you are connected via WiFi). As data is cached, it's not a serious problem if API is not reachable. If cached data is older than 1 day, you will get indication in last row anyway.
 const showAvailableVolume = true // some like to see the available data volume, some like to see the already used data volume.
-const showAntennaLogo = true // nice looking antenna logo in the upper left corner
+const showAntennaLogo = false // nice looking antenna logo in the upper left corner (does not work in dark mode, therefore disabled)
 
 let widget = await createWidget()
 if (!config.runsInWidget) await widget.presentSmall()
@@ -62,12 +62,12 @@ async function createWidget(items) {
        mobileIcon = SFSymbol.named('antenna.radiowaves.left.and.right');
        mobileIconElement = stack.addImage(mobileIcon.image)
        mobileIconElement.imageSize = new Size(16, 16)
-       if (Device.isUsingDarkAppearance())  mobileIconElement.tintColor = Color.white()
+       if (Device.isUsingDarkAppearance())  mobileIconElement.tintColor = Color.white()  // isUsingDarkAppearance() does not work in widget mode :-(
     }
     
     // if an additional datapass is booked, display "Pass:" + passname, else display "Datenvolumen:"
     if (data.passName == "Ihr Datenvolumen" || data.passName == "Ihr Telekom Datentarif" || data.passName.length <= 1) { // you may need to change this! (check your pass name)
-      line1 = stack.addText(" Datenvolumen")
+      line1 = stack.addText("Datenvolumen")
     } else line1 = stack.addText("Pass: " + data.passName)
     
     line1.font = Font.mediumSystemFont(13)
