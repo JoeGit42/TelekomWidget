@@ -26,7 +26,6 @@ Basierend auf dem Fork von [LupusArgentum](https://github.com/LupusArgentum) hab
 - Optimierung im Bereich der Texte/Textlängen
 
 ### ChangeLog
-- 2020-11-03 ADD: Antennen-Symbol oben links (habe ich bei [olikdesign](https://github.com/olikdesign) gesehen)
+- 2020-11-03 ADD: Antennen-Symbol oben links (habe ich bei [olikdesign](https://github.com/olikdesign) gesehen) (erstmal deaktiviert, da dies im dark mode nicht funktioniert)
 - 2020-11-03 ADD: Beschreibung der Schalter im Code eingefügt
 - 2020-11-03 CHG: Bei der Restlaufzeit werden erst Stunden angezeigt, wenn diese weniger als 5 Tage beträgt. Vorher dürften die Stunden nicht wirklich interessant sein.
-- 2020-11-03 BUG: Das Antennensymbol wird noch schwarz auf schwarz angezeigt, da im Widgetmodus der DarkMode nicht erkannt wird. -> Ich suche nach einem Workaround
