@@ -3,10 +3,11 @@
 // icon-color: pink; icon-glyph: signal;
 // creator: https://github.com/Sillium | changed by https://github.com/LupusArgentum | change again by me, https://github.com/JoeGit42
 const apiUrl = "https://pass.telekom.de/api/service/generic/v1/status"
-const logoIsWanted = (args.widgetParameter == "logo")
-const colorTimeToSignalEndOfMonth = false
-const showIndicationIfAPIOffline = false
-const showAvailableVolume = true
+const logoIsWanted =  (args.widgetParameter == "logo")  // value "logo" has to be added to widget konfiguration, to get Telekom-Logo in the upper right (longpress on widget to enable configuration)
+const colorTimeToSignalEndOfMonth = false // for those who are requried to to monthly order of data valume: if only 3 days left, time becomes red
+const showIndicationIfAPIOffline = false // if you want to be informed, if API is not available (e.g. if you are connected via WiFi). As data is cached, it's not a serious problem if API is not reachable. If cached data is older than 1 day, you will get indication in last row anyway.
+const showAvailableVolume = true // some like to see the available data volume, some like to see the already used data volume.
+const showAntennaLogo = true // nice looking antenna logo in the upper left corner
 
 let widget = await createWidget()
 if (!config.runsInWidget) await widget.presentSmall()
@@ -25,7 +26,7 @@ async function createWidget(items) {
   list.setPadding(10,10,10,0)
   // Open Telekom-page on klick
   list.url = "https://pass.telekom.de"
-  
+    
   try {
     let r = new Request(apiUrl)
   // API only answers for mobile Safari
@@ -54,14 +55,24 @@ async function createWidget(items) {
    
     let line1
     let stack = list.addStack()
+    let mobileIcon
+    let mobileIconElement
+    
+     if (showAntennaLogo) {
+       mobileIcon = SFSymbol.named('antenna.radiowaves.left.and.right');
+       mobileIconElement = stack.addImage(mobileIcon.image)
+       mobileIconElement.imageSize = new Size(16, 16)
+       if (Device.isUsingDarkAppearance())  mobileIconElement.tintColor = Color.white()
+    }
     
     // if an additional datapass is booked, display "Pass:" + passname, else display "Datenvolumen:"
     if (data.passName == "Ihr Datenvolumen" || data.passName == "Ihr Telekom Datentarif" || data.passName.length <= 1) { // you may need to change this! (check your pass name)
-      line1 = stack.addText("Datenvolumen")
+      line1 = stack.addText(" Datenvolumen")
     } else line1 = stack.addText("Pass: " + data.passName)
     
     line1.font = Font.mediumSystemFont(13)
     if (logoIsWanted) addLogoToLine1(stack)
+
 
     // change color of the remaining volume according to usage
     const line2 = list.addText(100-data.usedPercentage + "%")
@@ -131,7 +142,7 @@ async function createWidget(items) {
             }
           }
           
-          if (hours > 0) {
+          if (hours > 0 && days < 5) {  // only display houers, if less than 5 days left
             if (hours == 1) {
                daysStr += hours + ((days > 0 && !showAvailableVolume) ? " Std." : " Stunde")
             } else {
@@ -159,8 +170,8 @@ async function createWidget(items) {
         line5.font = Font.boldSystemFont(12)
         line5.textColor = Color.orange()
     }
-    
-  
+    //debugLine = list.addText("debug: " + true)
+      
   } catch (err) {
     list.addText("Error fetching JSON from https://pass.telekom.de/api/service/generic/v1/status")
   }
