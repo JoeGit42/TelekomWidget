@@ -7,7 +7,7 @@ const logoIsWanted =  (args.widgetParameter == "logo")  // value "logo" has to b
 const colorTimeToSignalEndOfMonth = false // for those who are requried to to monthly order of data valume: if only 3 days left, time becomes red
 const showIndicationIfAPIOffline = false // if you want to be informed, if API is not available (e.g. if you are connected via WiFi). As data is cached, it's not a serious problem if API is not reachable. If cached data is older than 1 day, you will get indication in last row anyway.
 const showAvailableVolume = true // some like to see the available data volume, some like to see the already used data volume.
-const showAntennaLogo = false // nice looking antenna logo in the upper left corner (does not work in dark mode, therefore disabled)
+const showAntennaLogo = true // nice looking antenna logo in the upper left corner
 
 let widget = await createWidget()
 if (!config.runsInWidget) await widget.presentSmall()
@@ -52,7 +52,7 @@ async function createWidget(items) {
         return errorList
       }
     }
-   
+    
     let line1
     let stack = list.addStack()
     let mobileIcon
@@ -62,17 +62,19 @@ async function createWidget(items) {
        mobileIcon = SFSymbol.named('antenna.radiowaves.left.and.right');
        mobileIconElement = stack.addImage(mobileIcon.image)
        mobileIconElement.imageSize = new Size(16, 16)
-       if (Device.isUsingDarkAppearance())  mobileIconElement.tintColor = Color.white()  // isUsingDarkAppearance() does not work in widget mode :-(
+       mobileIconElement.tintColor =  Color.dynamic(Color.black(), Color.white())
     }
     
     // if an additional datapass is booked, display "Pass:" + passname, else display "Datenvolumen:"
     if (data.passName == "Ihr Datenvolumen" || data.passName == "Ihr Telekom Datentarif" || data.passName.length <= 1) { // you may need to change this! (check your pass name)
-      line1 = stack.addText("Datenvolumen")
+      line1 = stack.addText(" DATENVOLUMEN")
     } else line1 = stack.addText("Pass: " + data.passName)
     
     line1.font = Font.mediumSystemFont(13)
+   
     if (logoIsWanted) addLogoToLine1(stack)
 
+    data.usedPercentage = 58
 
     // change color of the remaining volume according to usage
     const line2 = list.addText(100-data.usedPercentage + "%")
@@ -118,11 +120,20 @@ async function createWidget(items) {
      line4 = list.addText("von " + data.initialVolumeStr + " verbraucht")
     }
     line3.font = Font.boldSystemFont(13)
-    line4.font = Font.mediumSystemFont(10)      
+    line4.font = Font.mediumSystemFont(10)    
+
+    list.addSpacer(5)
     
-    list.addSpacer()
+    let pbImageVolume = createProgressbar(data.usedPercentage/100, (100-availableMonthPercentage)/100, line2.textColor)
+    if (pbImageVolume) {
+      let stackImageVolume = list.addImage(pbImageVolume)
+      stackImageVolume.imageSize = new Size(pbImageVolume.size.width, pbImageVolume.size.height) // for what ever reason, size has to be set again
+    }
+    
+    list.addSpacer(7)
+
     let line5
-	 
+
     // alt text on line5 if local data instead of Telekom API data:
     if (api_online || !showIndicationIfAPIOffline) {
       let plan = (data.remainingSeconds ? "prepaid" : data.remainingTimeStr ? "postpaid" : "")
@@ -171,11 +182,12 @@ async function createWidget(items) {
         line5.textColor = Color.orange()
     }
     //debugLine = list.addText("debug: " + true)
-      
+ 
   } catch (err) {
-    list.addText("Error fetching JSON from https://pass.telekom.de/api/service/generic/v1/status")
+    let errLine = list.addText("Error fetching JSON from https://pass.telekom.de/api/service/generic/v1/status")
+    errLine.font = Font.mediumSystemFont(10) 
   }
-
+  list.addSpacer (2)
   // Add time of last (successful) widget refresh:
   const currentTime = new Date()  // current timestamp
   let syncTime = new Date(data.dateStr) // timestamp of last sync in cellular environment
@@ -217,3 +229,47 @@ async function loadImage(imgUrl) {
     const req = new Request(imgUrl)
     return await req.loadImage()
 }
+
+
+function createProgressbar(pVolume, pTime, color){
+  const dc = new DrawContext()
+  const pbWidth = 130
+  const pbImageHeight = 11
+  const pbBarHeight = 9
+  
+  // perpare empty image
+  dc.size = new Size(pbWidth, pbImageHeight)
+  dc.opaque = false
+  dc.respectScreenScale = true
+  
+  // gray full month
+  dc.setFillColor(new Color('#aaaaaa', 0.42)) // gray  
+  const pathFull = new Path()
+  pathFull.addRoundedRect(new Rect(0, (pbImageHeight-pbBarHeight)/2, pbWidth, pbBarHeight), 5, 4)
+  dc.addPath(pathFull)
+  dc.fillPath()
+    
+  // progress of used volume
+  dc.setFillColor(color) 
+  const pathProgress = new Path()
+  let pathProgressWidth = minmax(pbWidth*pVolume, pbBarHeight, pbWidth)
+  pathProgress.addRoundedRect(new Rect(0, (pbImageHeight-pbBarHeight)/2, pathProgressWidth, pbBarHeight), 5, 4)
+  dc.addPath(pathProgress)
+  dc.fillPath()
+
+  dc.setFillColor(Color.dynamic(Color.black(), Color.white()))
+
+  //dc.setFillColor(Color.blue()) 
+  const pathDayMarker = new Path()
+  pathDayMarker.addRoundedRect(new Rect( minmax((pbWidth-pbBarHeight)*pTime, 0, pbWidth-pbBarHeight)    , 0, 2, pbImageHeight), 2, 2)
+  dc.addPath(pathDayMarker)
+  dc.fillPath()
+  
+  return dc.getImage()
+}
+
+function minmax(num, min, max){
+  return Math.min(Math.max(num, min), max)
+}
+
+//EOF
