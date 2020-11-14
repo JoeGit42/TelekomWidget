@@ -74,8 +74,6 @@ async function createWidget(items) {
    
     if (logoIsWanted) addLogoToLine1(stack)
 
-    data.usedPercentage = 58
-
     // change color of the remaining volume according to usage
     const line2 = list.addText(100-data.usedPercentage + "%")
     line2.font = Font.boldSystemFont(36)
