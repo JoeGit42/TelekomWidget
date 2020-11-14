@@ -2,8 +2,7 @@
 ### Forked from [LupusArgentum/TelekomWidget](https://github.com/LupusArgentum/TelekomWidget)
 ### (Which was forked from [Sillium/telekom.js](https://gist.github.com/Sillium/f904fb89444bc8dde12cfc07b8fa8728))
 
-![IMG_0491](https://user-images.githubusercontent.com/14128113/97805206-02d14880-1c55-11eb-907c-b1c4d08396ba.jpeg)
-![IMG_0492](https://user-images.githubusercontent.com/14128113/97805208-04027580-1c55-11eb-8356-9091424a150c.jpeg)
+![](screen.mov) 
 
 Oben im Code gibt es diverse Schalter um zwischen unterschiedlichen Funktionssweisen zu wechseln.
 Diese kann jeder für sich individuell auf `true` oder `false` setzen. Abhängigkeiten zwischen den Schaltern gibt es keine.
@@ -29,3 +28,5 @@ Basierend auf dem Fork von [LupusArgentum](https://github.com/LupusArgentum) hab
 - 2020-11-03 ADD: Antennen-Symbol oben links (habe ich bei [olikdesign](https://github.com/olikdesign) gesehen) (erstmal deaktiviert, da dies im dark mode nicht funktioniert)
 - 2020-11-03 ADD: Beschreibung der Schalter im Code eingefügt
 - 2020-11-03 CHG: Bei der Restlaufzeit werden erst Stunden angezeigt, wenn diese weniger als 5 Tage beträgt. Vorher dürften die Stunden nicht wirklich interessant sein.
+- 2020-11-14 ADD: Fortschrittsbalken hinzugefüht der das verbrauchte Datenvolumen anzeigt und die Position im Monat an der man sich aktuell befindet. (passend zum Abrechnugnszeitraum)
+- 2020-11-14 CHG: Antennen-Symbol funktioniert nun auch im Dark-Modus
