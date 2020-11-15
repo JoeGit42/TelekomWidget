@@ -80,17 +80,23 @@ async function createWidget(items) {
     
     // rough calculate remainig percentage of this month 
     // adjust colors according to what's needed within rest of the month
-    let availableMonthPercentage = (data.remainingSeconds / (31*86400)) * 100  // to ease calculation, it just takes 31 days
+    const month = new Date(data.dateStr)
+    const thisMonthLast = new Date(month.getFullYear(), month.getMonth() + 1, 0)
+    const thisMonthLastDate= minmax(thisMonthLast.getDate(), 28, 31)
+    let availableMonthPercentage = (data.remainingSeconds / (thisMonthLastDate*86400)) * 100 
+    
+    availableMonthPercentage = minmax(availableMonthPercentage, 0, 100)
+    
     let bufferPercentage = 5 
     // e.g. if 20% of month is gone (after the 6th of a month), yellow indication starts at 10% used Volume  (attention: 20% of the month gone means 80% still available)
     let yellowLevel = (100 - availableMonthPercentage) - (2*bufferPercentage) 
-    if (yellowLevel < 5) yellowLevel = 5 // yellow indication does not earlier than 5%, even at the beginning of a month
+    yellowLevel = minmax(yellowLevel, 5, 100) // yellow indication does not indicate earlier than 5%, even at the beginning of a month
     // e.g. if 20% of month is gone (after the 6th of a month), orange indication starts at 15% used Volume  (attention: 20% of the month gone means 80% still available)
     let orangeLevel = (100 - availableMonthPercentage) - bufferPercentage 
-    if (orangeLevel < 10) orangeLevel = 10 // orange indication does not earlier than 10%, even at the beginning of a month
+    orangeLevel = minmax(orangeLevel, Math.max(10,yellowLevel), 100) // orange indication does not earlier earlier than 10% and of course not earlier than yellow indication, even at the beginning of a month
     // e.g. if 20% of month is gone (after the 6th of a month), red indication starts at 25% used Volume  (attention: 20% of the month gone means 80% still available)
     let redLevel = (100 - availableMonthPercentage) + bufferPercentage
-    if (redLevel > 95) redLevel = 95 // red indication at 95%, even at the end of a month
+    redLevel = minmax(redLevel, orangeLevel, 95) // red indication at 95%, even at the end of a month
 
     if (data.usedPercentage >= redLevel) line2.textColor = Color.red()
     else if (data.usedPercentage >= orangeLevel) line2.textColor = Color.orange()
@@ -256,7 +262,7 @@ function createProgressbar(pVolume, pTime, color){
   dc.fillPath()
 
   dc.setFillColor(Color.dynamic(Color.black(), Color.white()))
-
+ 
   //dc.setFillColor(Color.blue()) 
   const pathDayMarker = new Path()
   pathDayMarker.addRoundedRect(new Rect( minmax((pbWidth-pbBarHeight)*pTime, 0, pbWidth-pbBarHeight)    , 0, 2, pbImageHeight), 2, 2)
