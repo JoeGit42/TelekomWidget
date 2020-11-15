@@ -30,3 +30,4 @@ Basierend auf dem Fork von [LupusArgentum](https://github.com/LupusArgentum) hab
 - 2020-11-03 CHG: Bei der Restlaufzeit werden erst Stunden angezeigt, wenn diese weniger als 5 Tage beträgt. Vorher dürften die Stunden nicht wirklich interessant sein.
 - 2020-11-14 ADD: Fortschrittsbalken hinzugefüht der das verbrauchte Datenvolumen anzeigt und die Position im Monat an der man sich aktuell befindet. (passend zum Abrechnugnszeitraum)
 - 2020-11-14 CHG: Antennen-Symbol funktioniert nun auch im Dark-Modus
+- 2020-11-15 CHG: Berechnugen etwas präzisiert und robuster gestaltet
